@@ -8,7 +8,6 @@
     tools:context=".Standard">
 
     <Space
-        android:id="@+id/space_s1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />
@@ -21,7 +20,6 @@
         android:text="@string/level_1" />
 
     <Space
-        android:id="@+id/space_s2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />
@@ -34,7 +32,6 @@
         android:text="@string/level_2" />
 
     <Space
-        android:id="@+id/space_s3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />
@@ -47,7 +44,6 @@
         android:text="@string/level_3" />
 
     <Space
-        android:id="@+id/space_s4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" />

@@ -3,28 +3,31 @@ package com.lowlevelprog.courseproject;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
+
+import static android.os.SystemClock.sleep;
 
 public class Puzzle extends AppCompatActivity {
 
     int a = 0;
     private int counter, firstClick, secondClick, rememberData;
     public static int width;
-    boolean check = false;
+    public static int index= 1;
     private static Random random = new Random();
 
-    private int[] imageArray = {R.drawable.one, R.drawable.two,
-            R.drawable.three, R.drawable.four,
-            R.drawable.five, R.drawable.six,
-            R.drawable.seven, R.drawable.eight, R.drawable.nine};
-    private int[] newImageArray = {R.drawable.one, R.drawable.two,
-            R.drawable.three, R.drawable.four,
-            R.drawable.five, R.drawable.six,
-            R.drawable.seven, R.drawable.eight, R.drawable.nine};
+    private int[] level1;
+    private int[] newImageArray;
+    int[] randomImageArray;
 
     public static void  swap(int[] array, int firstInd, int secondInd) {
         int temporary = array[firstInd];
@@ -42,18 +45,54 @@ public class Puzzle extends AppCompatActivity {
         return array;
     }
 
-    int[] randomImageArray = shake(imageArray);
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray("key1", level1);
+        outState.putIntArray("key2", newImageArray);
+        outState.putIntArray("key3", randomImageArray);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            level1 = savedInstanceState.getIntArray("key1");
+            newImageArray = savedInstanceState.getIntArray("key2");
+            randomImageArray = savedInstanceState.getIntArray("key3");
+            final GridView gridView = (GridView) findViewById(R.id.gridView);
+            if(index<4) gridView.setNumColumns(3);
+            else gridView.setNumColumns(4);
+            gridView.setAdapter(new Adapter(this, randomImageArray));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
+            Bundle bundle = getIntent().getExtras();
+            load(bundle.getString("strName"));
+            index = Integer.parseInt(bundle.getString("strName"));
+            if (index < 4) {
+                newImageArray = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+                for (int i = 0; i < 9; i++) newImageArray[i] = level1[i];
+            } else {
+                newImageArray = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                for (int i = 0; i < 16; i++) newImageArray[i] = level1[i];
+            }
+            randomImageArray = shake(level1);
+
         DisplayMetrics dmetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dmetrics);
-        width = dmetrics.widthPixels / 3;
+        if(index<4) width = dmetrics.widthPixels / 3;
+        else width = dmetrics.widthPixels / 4;
 
         final GridView gridView = (GridView) findViewById(R.id.gridView);
+        if(index<4) gridView.setNumColumns(3);
+        else gridView.setNumColumns(4);
         gridView.setAdapter(new Adapter(this, randomImageArray));
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,7 +110,6 @@ public class Puzzle extends AppCompatActivity {
                     gridView.invalidateViews();
                     counter = 0;
                 }
-
                 if (randomImageArray[0] == newImageArray[0] &&
                         randomImageArray[1] == newImageArray[1] &&
                         randomImageArray[2] == newImageArray[2] &&
@@ -80,20 +118,63 @@ public class Puzzle extends AppCompatActivity {
                         randomImageArray[5] == newImageArray[5] &&
                         randomImageArray[6] == newImageArray[6] &&
                         randomImageArray[7] == newImageArray[7] &&
-                        randomImageArray[8] == newImageArray[8]) {
-                    check = true;
-                }
-
-                if (check) {
-
+                        randomImageArray[8] == newImageArray[8]){
+                    if(index<4) finish();
+                    else if(randomImageArray[9] == newImageArray[9] &&
+                            randomImageArray[10] == newImageArray[10] &&
+                            randomImageArray[11] == newImageArray[11] &&
+                            randomImageArray[12] == newImageArray[12] &&
+                            randomImageArray[13] == newImageArray[13] &&
+                            randomImageArray[14] == newImageArray[14] &&
+                            randomImageArray[15] == newImageArray[15]){
+                        finish();
+                    }
                 }
             }
         });
     }
 
-    public void change(View v) {
-        v.setBackgroundResource(imageArray[a]);
-        a++;
-        a = a % 9;
+    public void load(String choice) {
+        switch(Integer.parseInt(choice)) {
+            case 1:
+                level1 = new int[]{R.drawable.p1_1, R.drawable.p1_2,
+                        R.drawable.p1_3, R.drawable.p1_4,
+                        R.drawable.p1_5, R.drawable.p1_6,
+                        R.drawable.p1_7, R.drawable.p1_8, R.drawable.p1_9};
+                break;
+            case 2:
+                level1 = new int[]{R.drawable.p2_1, R.drawable.p2_2,
+                        R.drawable.p2_3, R.drawable.p2_4,
+                        R.drawable.p2_5, R.drawable.p2_6,
+                        R.drawable.p2_7, R.drawable.p2_8, R.drawable.p2_9};
+                break;
+            case 3:
+                level1 = new int[]{R.drawable.image_part_001, R.drawable.image_part_002,
+                        R.drawable.image_part_003, R.drawable.image_part_004,
+                        R.drawable.image_part_005, R.drawable.image_part_006,
+                        R.drawable.image_part_007, R.drawable.image_part_008, R.drawable.image_part_009};
+                break;
+            case 4:
+                level1 = new int[]{R.drawable.p4_1, R.drawable.p4_2,
+                        R.drawable.p4_3, R.drawable.p4_4,
+                        R.drawable.p4_5, R.drawable.p4_6,
+                        R.drawable.p4_7, R.drawable.p4_8, R.drawable.p4_9,
+                        R.drawable.p4_10,R.drawable.p4_11,R.drawable.p4_12,
+                        R.drawable.p4_13,R.drawable.p4_14, R.drawable.p4_15,
+                        R.drawable.p4_16};
+                break;
+            case 5:
+                level1 = new int[]{R.drawable.image_part_001, R.drawable.image_part_002,
+                        R.drawable.image_part_003, R.drawable.image_part_004,
+                        R.drawable.image_part_005, R.drawable.image_part_006,
+                        R.drawable.image_part_007, R.drawable.image_part_008, R.drawable.image_part_009};
+                break;
+            case 6:
+                level1 = new int[]{R.drawable.image_part_001, R.drawable.image_part_002,
+                        R.drawable.image_part_003, R.drawable.image_part_004,
+                        R.drawable.image_part_005, R.drawable.image_part_006,
+                        R.drawable.image_part_007, R.drawable.image_part_008, R.drawable.image_part_009};
+                break;
+        }
     }
 }
