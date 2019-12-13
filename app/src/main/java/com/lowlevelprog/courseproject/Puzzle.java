@@ -3,33 +3,25 @@ package com.lowlevelprog.courseproject;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
-
-import static android.os.SystemClock.sleep;
 
 public class Puzzle extends AppCompatActivity {
 
     int a = 0;
     private int counter, firstClick, secondClick, rememberData;
     public static int width;
-    public static int index= 1;
+    public static int index = 1;
     private static Random random = new Random();
 
     private int[] level1;
     private int[] newImageArray;
     int[] randomImageArray;
 
-    public static void  swap(int[] array, int firstInd, int secondInd) {
+    public static void swap(int[] array, int firstInd, int secondInd) {
         int temporary = array[firstInd];
         array[firstInd] = array[secondInd];
         array[secondInd] = temporary;
@@ -62,7 +54,7 @@ public class Puzzle extends AppCompatActivity {
             newImageArray = savedInstanceState.getIntArray("key2");
             randomImageArray = savedInstanceState.getIntArray("key3");
             final GridView gridView = (GridView) findViewById(R.id.gridView);
-            if(index<4) gridView.setNumColumns(3);
+            if (index < 4) gridView.setNumColumns(3);
             else gridView.setNumColumns(4);
             gridView.setAdapter(new Adapter(this, randomImageArray));
         }
@@ -73,25 +65,25 @@ public class Puzzle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
-            Bundle bundle = getIntent().getExtras();
-            load(bundle.getString("strName"));
-            index = Integer.parseInt(bundle.getString("strName"));
-            if (index < 4) {
-                newImageArray = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-                for (int i = 0; i < 9; i++) newImageArray[i] = level1[i];
-            } else {
-                newImageArray = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-                for (int i = 0; i < 16; i++) newImageArray[i] = level1[i];
-            }
-            randomImageArray = shake(level1);
+        Bundle bundle = getIntent().getExtras();
+        load(bundle.getString("strName"));
+        index = Integer.parseInt(bundle.getString("strName"));
+        if (index < 4) {
+            newImageArray = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+            for (int i = 0; i < 9; i++) newImageArray[i] = level1[i];
+        } else {
+            newImageArray = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            for (int i = 0; i < 16; i++) newImageArray[i] = level1[i];
+        }
+        randomImageArray = shake(level1);
 
         DisplayMetrics dmetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dmetrics);
-        if(index<4) width = dmetrics.widthPixels / 3;
+        if (index < 4) width = dmetrics.widthPixels / 3;
         else width = dmetrics.widthPixels / 4;
 
         final GridView gridView = (GridView) findViewById(R.id.gridView);
-        if(index<4) gridView.setNumColumns(3);
+        if (index < 4) gridView.setNumColumns(3);
         else gridView.setNumColumns(4);
         gridView.setAdapter(new Adapter(this, randomImageArray));
 
@@ -118,15 +110,15 @@ public class Puzzle extends AppCompatActivity {
                         randomImageArray[5] == newImageArray[5] &&
                         randomImageArray[6] == newImageArray[6] &&
                         randomImageArray[7] == newImageArray[7] &&
-                        randomImageArray[8] == newImageArray[8]){
-                    if(index<4) finish();
-                    else if(randomImageArray[9] == newImageArray[9] &&
+                        randomImageArray[8] == newImageArray[8]) {
+                    if (index < 4) finish();
+                    else if (randomImageArray[9] == newImageArray[9] &&
                             randomImageArray[10] == newImageArray[10] &&
                             randomImageArray[11] == newImageArray[11] &&
                             randomImageArray[12] == newImageArray[12] &&
                             randomImageArray[13] == newImageArray[13] &&
                             randomImageArray[14] == newImageArray[14] &&
-                            randomImageArray[15] == newImageArray[15]){
+                            randomImageArray[15] == newImageArray[15]) {
                         finish();
                     }
                 }
@@ -135,7 +127,7 @@ public class Puzzle extends AppCompatActivity {
     }
 
     public void load(String choice) {
-        switch(Integer.parseInt(choice)) {
+        switch (Integer.parseInt(choice)) {
             case 1:
                 level1 = new int[]{R.drawable.p1_1, R.drawable.p1_2,
                         R.drawable.p1_3, R.drawable.p1_4,
@@ -159,8 +151,8 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p4_3, R.drawable.p4_4,
                         R.drawable.p4_5, R.drawable.p4_6,
                         R.drawable.p4_7, R.drawable.p4_8, R.drawable.p4_9,
-                        R.drawable.p4_10,R.drawable.p4_11,R.drawable.p4_12,
-                        R.drawable.p4_13,R.drawable.p4_14, R.drawable.p4_15,
+                        R.drawable.p4_10, R.drawable.p4_11, R.drawable.p4_12,
+                        R.drawable.p4_13, R.drawable.p4_14, R.drawable.p4_15,
                         R.drawable.p4_16};
                 break;
             case 5:

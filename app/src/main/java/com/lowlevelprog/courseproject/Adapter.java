@@ -37,11 +37,10 @@ public class Adapter extends BaseAdapter {
 
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(gwidth,gwidth));
+            imageView.setLayoutParams(new GridView.LayoutParams(gwidth, gwidth));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(3,3,3,3);
-        }
-        else {
+            imageView.setPadding(3, 3, 3, 3);
+        } else {
             imageView = (ImageView) convertView;
         }
         imageView.setImageResource(grideArray[position]);

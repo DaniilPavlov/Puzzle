@@ -18,7 +18,7 @@ public class LevelChoice extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent toStart;
-                        toStart= new Intent(LevelChoice.this, Standard.class).
+                        toStart = new Intent(LevelChoice.this, Standard.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toStart);
                     }
@@ -30,7 +30,7 @@ public class LevelChoice extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent toHard;
-                        toHard= new Intent(LevelChoice.this, Hard.class).
+                        toHard = new Intent(LevelChoice.this, Hard.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toHard);
                     }
