@@ -1,6 +1,11 @@
 package com.lowlevelprog.courseproject;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -60,10 +65,54 @@ public class Puzzle extends AppCompatActivity {
         }
     }
 
+    boolean soundIsOff;
+
+    private boolean mIsBound = false;
+    private MusicService mServ;
+    private ServiceConnection Scon = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName name, IBinder
+                binder) {
+            mServ = ((MusicService.ServiceBinder) binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    void doUnbindService() {
+        if (mIsBound) {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
+
+        // music
+        soundIsOff = Home.soundIsOff;
+        if (soundIsOff) {
+            doUnbindService();
+            Intent music = new Intent();
+            music.setClass(this, MusicService.class);
+            stopService(music);
+        } else {
+            doBindService();
+            Intent music = new Intent();
+            music.setClass(this, MusicService.class);
+            startService(music);
+        }
 
         Bundle bundle = getIntent().getExtras();
         load(bundle.getString("strName"));
@@ -141,10 +190,10 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p2_7, R.drawable.p2_8, R.drawable.p2_9};
                 break;
             case 3:
-                level1 = new int[]{R.drawable.image_part_001, R.drawable.image_part_002,
-                        R.drawable.image_part_003, R.drawable.image_part_004,
-                        R.drawable.image_part_005, R.drawable.image_part_006,
-                        R.drawable.image_part_007, R.drawable.image_part_008, R.drawable.image_part_009};
+                level1 = new int[]{R.drawable.p3_1, R.drawable.p3_2,
+                        R.drawable.p3_3, R.drawable.p3_4,
+                        R.drawable.p3_5, R.drawable.p3_6,
+                        R.drawable.p3_7, R.drawable.p3_8, R.drawable.p3_9};
                 break;
             case 4:
                 level1 = new int[]{R.drawable.p4_1, R.drawable.p4_2,
@@ -156,16 +205,22 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p4_16};
                 break;
             case 5:
-                level1 = new int[]{R.drawable.image_part_001, R.drawable.image_part_002,
-                        R.drawable.image_part_003, R.drawable.image_part_004,
-                        R.drawable.image_part_005, R.drawable.image_part_006,
-                        R.drawable.image_part_007, R.drawable.image_part_008, R.drawable.image_part_009};
+                level1 = new int[]{R.drawable.p5_1, R.drawable.p5_2,
+                        R.drawable.p5_3, R.drawable.p5_4,
+                        R.drawable.p5_5, R.drawable.p5_6,
+                        R.drawable.p5_7, R.drawable.p5_8, R.drawable.p5_9,
+                        R.drawable.p5_10, R.drawable.p5_11, R.drawable.p5_12,
+                        R.drawable.p5_13, R.drawable.p5_14, R.drawable.p5_15,
+                        R.drawable.p5_16};
                 break;
             case 6:
-                level1 = new int[]{R.drawable.image_part_001, R.drawable.image_part_002,
-                        R.drawable.image_part_003, R.drawable.image_part_004,
-                        R.drawable.image_part_005, R.drawable.image_part_006,
-                        R.drawable.image_part_007, R.drawable.image_part_008, R.drawable.image_part_009};
+                level1 = new int[]{R.drawable.p6_1, R.drawable.p6_2,
+                        R.drawable.p6_3, R.drawable.p6_4,
+                        R.drawable.p6_5, R.drawable.p6_6,
+                        R.drawable.p6_7, R.drawable.p6_8, R.drawable.p6_9,
+                        R.drawable.p6_10, R.drawable.p6_11, R.drawable.p6_12,
+                        R.drawable.p6_13, R.drawable.p6_14, R.drawable.p6_15,
+                        R.drawable.p6_16};
                 break;
         }
     }

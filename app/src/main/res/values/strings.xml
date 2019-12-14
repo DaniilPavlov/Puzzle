@@ -7,5 +7,6 @@
     <string name="standard">standard</string>
     <string name="hard">hard</string>
     <string name="menu">menu</string>
+    <string name="sound_button_description">Turning sound off and on</string>
 
 </resources>
