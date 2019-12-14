@@ -58,4 +58,11 @@ public class About extends AppCompatActivity {
             startService(music);
         }
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+    }
 }

@@ -42,6 +42,14 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);

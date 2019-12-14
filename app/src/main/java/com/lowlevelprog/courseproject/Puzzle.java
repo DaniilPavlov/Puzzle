@@ -224,4 +224,12 @@ public class Puzzle extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+    }
 }

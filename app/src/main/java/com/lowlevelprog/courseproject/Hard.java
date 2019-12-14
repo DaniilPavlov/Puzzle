@@ -101,4 +101,12 @@ public class Hard extends AppCompatActivity {
                 }
         );
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+    }
 }
