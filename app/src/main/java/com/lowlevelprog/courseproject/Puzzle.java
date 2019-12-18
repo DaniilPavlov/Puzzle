@@ -138,6 +138,9 @@ public class Puzzle extends AppCompatActivity {
         if(index<4){
             width = dmetrics.widthPixels /3;
             height = dmetrics.heightPixels /3;
+        } else {
+            width = dmetrics.widthPixels /4;
+            height = dmetrics.heightPixels /4;
         }
 
 
