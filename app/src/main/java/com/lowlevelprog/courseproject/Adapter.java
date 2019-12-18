@@ -1,6 +1,7 @@
 package com.lowlevelprog.courseproject;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,6 +13,8 @@ public class Adapter extends BaseAdapter {
     private ImageView imageView;
     private int[] grideArray;
     private int gwidth = Puzzle.width;
+    private int gheight = Puzzle.height;
+    private int gorientation = Puzzle.orientation;
 
     public Adapter(Context context, int[] gridarray) {
         mContext = context;
@@ -37,7 +40,11 @@ public class Adapter extends BaseAdapter {
 
         if (convertView == null) {
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(gwidth, gwidth));
+            if (gorientation == Configuration.ORIENTATION_LANDSCAPE) {
+                imageView.setLayoutParams(new GridView.LayoutParams(gheight,gheight));
+            } else {
+                imageView.setLayoutParams(new GridView.LayoutParams(gwidth, gwidth));
+            }
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(3, 3, 3, 3);
         } else {

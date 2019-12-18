@@ -4,11 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -19,7 +21,9 @@ public class Puzzle extends AppCompatActivity {
     int a = 0;
     private int counter, firstClick, secondClick, rememberData;
     public static int width;
+    public static int height;
     public static int index = 1;
+    public static int orientation;
     private static Random random = new Random();
 
     private int[] level1;
@@ -100,6 +104,8 @@ public class Puzzle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
+        orientation = getResources().getConfiguration().orientation;
+
         // music
         soundIsOff = Home.soundIsOff;
         if (soundIsOff) {
@@ -126,15 +132,22 @@ public class Puzzle extends AppCompatActivity {
         }
         randomImageArray = shake(level1);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         DisplayMetrics dmetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dmetrics);
-        if (index < 4) width = dmetrics.widthPixels / 3;
-        else width = dmetrics.widthPixels / 4;
+        if(index<4){
+            width = dmetrics.widthPixels /3;
+            height = dmetrics.heightPixels /3;
+        }
+
 
         final GridView gridView = (GridView) findViewById(R.id.gridView);
         if (index < 4) gridView.setNumColumns(3);
         else gridView.setNumColumns(4);
         gridView.setAdapter(new Adapter(this, randomImageArray));
+
+
+
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -174,6 +187,36 @@ public class Puzzle extends AppCompatActivity {
             }
         });
     }
+
+    /*public void chooseSize(int ourWidth,int ourHeight){
+        if(index<4) {
+            if(ourWidth == 240 && ourHeight == 320) {
+                width = dmetrics.widthPixels / 3;
+                height = dmetrics.heightPixels / 3;
+            }
+            if(ourWidth == 320 && ourHeight == 480) {
+                width = dmetrics.widthPixels / 3;
+                height = dmetrics.heightPixels / 3;
+            }
+            if(ourWidth == 480 && ourHeight == 800) {
+                width = dmetrics.widthPixels / 3;
+                height = dmetrics.heightPixels / 3;
+            }
+            if(ourWidth == 640 && ourHeight == 960) {
+                width = dmetrics.widthPixels / 3;
+                height = dmetrics.heightPixels / 3;
+            }
+            if(ourWidth == 960 && ourHeight == 1440) {
+                width = dmetrics.widthPixels / 3;
+                height = dmetrics.heightPixels / 3;
+            }
+        }
+        else {
+            width = dmetrics.widthPixels/4;
+            height = dmetrics.heightPixels /4;
+        }
+
+    }*/
 
     public void load(String choice) {
         switch (Integer.parseInt(choice)) {
@@ -224,6 +267,7 @@ public class Puzzle extends AppCompatActivity {
                 break;
         }
     }
+
 
     @Override
     public void onResume(){

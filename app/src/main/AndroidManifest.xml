@@ -23,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Puzzle" />
+        <activity android:name=".Puzzle"
+            android:theme="@style/IntroTheme"/>
     </application>
 
 </manifest>

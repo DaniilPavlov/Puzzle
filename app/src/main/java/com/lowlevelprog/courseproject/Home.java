@@ -50,9 +50,18 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        if (mServ != null) {
+            mServ.pauseMusic();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        findViewById(R.id.soundRegulator).setBackgroundResource(R.drawable.volume_up);
 
         doBindService();
         Intent music = new Intent();

@@ -11,8 +11,7 @@
         android:id="@+id/space_main1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:text="@string/about" />
+        android:layout_weight="0.5" />
 
     <Button
         android:id="@+id/but_menu"
@@ -25,8 +24,7 @@
         android:id="@+id/space_main2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:text="@string/about" />
+        android:layout_weight="0.5" />
 
     <Button
         android:id="@+id/but_about"
@@ -44,10 +42,9 @@
 
     <ImageButton
         android:id="@+id/soundRegulator"
-        android:layout_width="397dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
         android:contentDescription="@string/sound_button_description"
         android:onClick="soundOff" />
 </LinearLayout>
