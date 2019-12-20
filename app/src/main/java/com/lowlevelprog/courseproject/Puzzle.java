@@ -27,7 +27,7 @@ public class Puzzle extends AppCompatActivity {
     private static Random random = new Random();
 
     private int[] level1;
-    private int example;
+    private int example = 1;
     private int[] newImageArray;
     int[] randomImageArray;
     String shText = "hide";
