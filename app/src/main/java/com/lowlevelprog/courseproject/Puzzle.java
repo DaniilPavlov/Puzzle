@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,14 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import java.util.Random;
 
 public class Puzzle extends AppCompatActivity {
 
-    int a = 0;
     private int counter, firstClick, secondClick, rememberData;
     public static int width;
     public static int height;
@@ -27,8 +27,13 @@ public class Puzzle extends AppCompatActivity {
     private static Random random = new Random();
 
     private int[] level1;
+    private int example;
     private int[] newImageArray;
     int[] randomImageArray;
+    String shText = "hide";
+    Button showHide;
+    ImageView imgShow;
+    GridView gridView;
 
     public static void swap(int[] array, int firstInd, int secondInd) {
         int temporary = array[firstInd];
@@ -53,6 +58,8 @@ public class Puzzle extends AppCompatActivity {
         outState.putIntArray("key1", level1);
         outState.putIntArray("key2", newImageArray);
         outState.putIntArray("key3", randomImageArray);
+        outState.putString("key4", shText);
+        outState.putInt("key5", example);
     }
 
     @Override
@@ -62,6 +69,17 @@ public class Puzzle extends AppCompatActivity {
             level1 = savedInstanceState.getIntArray("key1");
             newImageArray = savedInstanceState.getIntArray("key2");
             randomImageArray = savedInstanceState.getIntArray("key3");
+            shText = savedInstanceState.getString("key4");
+            example = savedInstanceState.getInt("key5");
+            if (example == 1) {
+                showHide.setText("hide");
+                imgShow.setVisibility(View.VISIBLE);
+                gridView.setVisibility(View.INVISIBLE);
+            } else {
+                imgShow.setVisibility(View.INVISIBLE);
+                gridView.setVisibility(View.VISIBLE);
+                showHide.setText("show");
+            }
             final GridView gridView = (GridView) findViewById(R.id.gridView);
             if (index < 4) gridView.setNumColumns(3);
             else gridView.setNumColumns(4);
@@ -70,11 +88,9 @@ public class Puzzle extends AppCompatActivity {
     }
 
     boolean soundIsOff;
-
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection() {
-
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
             mServ = ((MusicService.ServiceBinder) binder).getService();
@@ -103,8 +119,8 @@ public class Puzzle extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
-
         orientation = getResources().getConfiguration().orientation;
+        imgShow = findViewById(R.id.img_show);
 
         // music
         soundIsOff = Home.soundIsOff;
@@ -143,13 +159,32 @@ public class Puzzle extends AppCompatActivity {
             height = dmetrics.heightPixels / 4;
         }
 
+        showHide = findViewById(R.id.show_hide);
+        showHide.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (showHide.getText().equals("show")) {
+                            shText = "hide";
+                            imgShow.setVisibility(View.VISIBLE);
+                            gridView.setVisibility(View.INVISIBLE);
+                            example = 1;
+                        } else {
+                            imgShow.setVisibility(View.INVISIBLE);
+                            gridView.setVisibility(View.VISIBLE);
+                            shText = "show";
+                            example = 0;
+                        }
+                        showHide.setText(shText);
+                    }
+                }
+        );
 
-        final GridView gridView = (GridView) findViewById(R.id.gridView);
+
+         gridView = findViewById(R.id.gridView);
         if (index < 4) gridView.setNumColumns(3);
         else gridView.setNumColumns(4);
         gridView.setAdapter(new Adapter(this, randomImageArray));
-
-
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
@@ -197,18 +232,21 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p1_3, R.drawable.p1_4,
                         R.drawable.p1_5, R.drawable.p1_6,
                         R.drawable.p1_7, R.drawable.p1_8, R.drawable.p1_9};
+                imgShow.setImageResource(R.drawable.p1);
                 break;
             case 2:
                 level1 = new int[]{R.drawable.p2_1, R.drawable.p2_2,
                         R.drawable.p2_3, R.drawable.p2_4,
                         R.drawable.p2_5, R.drawable.p2_6,
                         R.drawable.p2_7, R.drawable.p2_8, R.drawable.p2_9};
+                imgShow.setImageResource(R.drawable.p2);
                 break;
             case 3:
                 level1 = new int[]{R.drawable.p3_1, R.drawable.p3_2,
                         R.drawable.p3_3, R.drawable.p3_4,
                         R.drawable.p3_5, R.drawable.p3_6,
                         R.drawable.p3_7, R.drawable.p3_8, R.drawable.p3_9};
+                imgShow.setImageResource(R.drawable.p3);
                 break;
             case 4:
                 level1 = new int[]{R.drawable.p4_1, R.drawable.p4_2,
@@ -218,6 +256,7 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p4_10, R.drawable.p4_11, R.drawable.p4_12,
                         R.drawable.p4_13, R.drawable.p4_14, R.drawable.p4_15,
                         R.drawable.p4_16};
+                imgShow.setImageResource(R.drawable.p4);
                 break;
             case 5:
                 level1 = new int[]{R.drawable.p5_1, R.drawable.p5_2,
@@ -227,6 +266,7 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p5_10, R.drawable.p5_11, R.drawable.p5_12,
                         R.drawable.p5_13, R.drawable.p5_14, R.drawable.p5_15,
                         R.drawable.p5_16};
+                imgShow.setImageResource(R.drawable.p5);
                 break;
             case 6:
                 level1 = new int[]{R.drawable.p6_1, R.drawable.p6_2,
@@ -236,8 +276,10 @@ public class Puzzle extends AppCompatActivity {
                         R.drawable.p6_10, R.drawable.p6_11, R.drawable.p6_12,
                         R.drawable.p6_13, R.drawable.p6_14, R.drawable.p6_15,
                         R.drawable.p6_16};
+                imgShow.setImageResource(R.drawable.p6);
                 break;
         }
+
     }
 
 
