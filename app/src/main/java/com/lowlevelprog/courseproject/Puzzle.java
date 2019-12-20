@@ -135,12 +135,12 @@ public class Puzzle extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         DisplayMetrics dmetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dmetrics);
-        if(index<4){
-            width = dmetrics.widthPixels /3;
-            height = dmetrics.heightPixels /3;
+        if (index < 4) {
+            width = dmetrics.widthPixels / 3;
+            height = dmetrics.heightPixels / 3;
         } else {
-            width = dmetrics.widthPixels /4;
-            height = dmetrics.heightPixels /4;
+            width = dmetrics.widthPixels / 4;
+            height = dmetrics.heightPixels / 4;
         }
 
 
@@ -148,8 +148,6 @@ public class Puzzle extends AppCompatActivity {
         if (index < 4) gridView.setNumColumns(3);
         else gridView.setNumColumns(4);
         gridView.setAdapter(new Adapter(this, randomImageArray));
-
-
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -191,35 +189,6 @@ public class Puzzle extends AppCompatActivity {
         });
     }
 
-    /*public void chooseSize(int ourWidth,int ourHeight){
-        if(index<4) {
-            if(ourWidth == 240 && ourHeight == 320) {
-                width = dmetrics.widthPixels / 3;
-                height = dmetrics.heightPixels / 3;
-            }
-            if(ourWidth == 320 && ourHeight == 480) {
-                width = dmetrics.widthPixels / 3;
-                height = dmetrics.heightPixels / 3;
-            }
-            if(ourWidth == 480 && ourHeight == 800) {
-                width = dmetrics.widthPixels / 3;
-                height = dmetrics.heightPixels / 3;
-            }
-            if(ourWidth == 640 && ourHeight == 960) {
-                width = dmetrics.widthPixels / 3;
-                height = dmetrics.heightPixels / 3;
-            }
-            if(ourWidth == 960 && ourHeight == 1440) {
-                width = dmetrics.widthPixels / 3;
-                height = dmetrics.heightPixels / 3;
-            }
-        }
-        else {
-            width = dmetrics.widthPixels/4;
-            height = dmetrics.heightPixels /4;
-        }
-
-    }*/
 
     public void load(String choice) {
         switch (Integer.parseInt(choice)) {
@@ -273,7 +242,7 @@ public class Puzzle extends AppCompatActivity {
 
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (mServ != null) {
             mServ.resumeMusic();

@@ -41,7 +41,7 @@ public class Adapter extends BaseAdapter {
         if (convertView == null) {
             imageView = new ImageView(mContext);
             if (gorientation == Configuration.ORIENTATION_LANDSCAPE) {
-                imageView.setLayoutParams(new GridView.LayoutParams(gheight,gheight));
+                imageView.setLayoutParams(new GridView.LayoutParams(gheight, gheight));
             } else {
                 imageView.setLayoutParams(new GridView.LayoutParams(gwidth, gwidth));
             }

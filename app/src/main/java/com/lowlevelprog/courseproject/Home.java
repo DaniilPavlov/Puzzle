@@ -12,7 +12,6 @@ import android.widget.Button;
 
 public class Home extends AppCompatActivity {
     static boolean soundIsOff = false;
-    HomeWatcher mHomeWatcher;
     // variables for music
     private boolean mIsBound = false;
     private MusicService mServ;
@@ -42,7 +41,7 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (mServ != null) {
             mServ.resumeMusic();
@@ -50,7 +49,7 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         if (mServ != null) {
             mServ.pauseMusic();
@@ -68,23 +67,6 @@ public class Home extends AppCompatActivity {
         music.setClass(this, MusicService.class);
         startService(music);
         //pausing when needed
-        mHomeWatcher = new HomeWatcher(this);
-        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
-            @Override
-            public void onHomePressed() {
-                if (mServ != null) {
-                    mServ.pauseMusic();
-                }
-            }
-
-            @Override
-            public void onHomeLongPressed() {
-                if (mServ != null) {
-                    mServ.pauseMusic();
-                }
-            }
-        });
-        mHomeWatcher.startWatch();
 
 
         Button menu = findViewById(R.id.but_menu);
