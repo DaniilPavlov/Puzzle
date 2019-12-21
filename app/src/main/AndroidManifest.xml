@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lowlevelprog.courseproject">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,9 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Win"></activity>
+
         <service
             android:name=".MusicService"
             android:enabled="true" />
+
         <activity android:name=".About" />
         <activity android:name=".Hard" />
         <activity android:name=".Standard" />
@@ -23,8 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Puzzle"
-            android:theme="@style/IntroTheme"/>
+        <activity
+            android:name=".Puzzle"
+            android:theme="@style/IntroTheme" />
     </application>
 
 </manifest>

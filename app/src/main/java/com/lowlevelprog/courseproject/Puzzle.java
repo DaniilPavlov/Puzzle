@@ -209,7 +209,13 @@ public class Puzzle extends AppCompatActivity {
                         randomImageArray[6] == newImageArray[6] &&
                         randomImageArray[7] == newImageArray[7] &&
                         randomImageArray[8] == newImageArray[8]) {
-                    if (index < 4) finish();
+                    if (index < 4) {
+                        Intent toWin;
+                        toWin = new Intent(Puzzle.this, Win.class).
+                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(toWin);
+                        finish();
+                    }
                     else if (randomImageArray[9] == newImageArray[9] &&
                             randomImageArray[10] == newImageArray[10] &&
                             randomImageArray[11] == newImageArray[11] &&
@@ -217,6 +223,10 @@ public class Puzzle extends AppCompatActivity {
                             randomImageArray[13] == newImageArray[13] &&
                             randomImageArray[14] == newImageArray[14] &&
                             randomImageArray[15] == newImageArray[15]) {
+                        Intent toWin;
+                        toWin = new Intent(Puzzle.this, Win.class).
+                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        startActivity(toWin);
                         finish();
                     }
                 }
