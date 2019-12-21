@@ -9,14 +9,18 @@ import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 public class Win extends AppCompatActivity {
 
     boolean soundIsOff;
+    Puzzle puzzle = new Puzzle();
 
     private boolean mIsBound = false;
     private MusicService mServ;
@@ -50,13 +54,18 @@ public class Win extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
         ImageView ivBasicImage = findViewById(R.id.image_win);
+        TextView connection = findViewById(R.id.connection);
+        TextView lastC = findViewById(R.id.current);
+        lastC.setText(puzzle.sChronometer);
+
         ConnectivityManager cm =
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            connection.setVisibility(View.INVISIBLE);
             Picasso.with(getApplicationContext()).load("https://im0-tub-ru.yandex.net/i?id=389e4c5fcd7e6a3fd8b022fad23329a4&n=13").into(ivBasicImage);
-        }
-        else{
+        } else {
+            connection.setVisibility(View.VISIBLE);
         }
         // music
         soundIsOff = Home.soundIsOff;
@@ -79,5 +88,17 @@ public class Win extends AppCompatActivity {
         if (mServ != null) {
             mServ.resumeMusic();
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
     }
 }

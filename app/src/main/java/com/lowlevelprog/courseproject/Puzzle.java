@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -25,6 +27,8 @@ public class Puzzle extends AppCompatActivity {
     public static int index = 1;
     public static int orientation;
     private static Random random = new Random();
+    public Chronometer mChronometer;
+    public String sChronometer;
 
     private int[] level1;
     private int example = 1;
@@ -121,6 +125,9 @@ public class Puzzle extends AppCompatActivity {
         setContentView(R.layout.activity_puzzle);
         orientation = getResources().getConfiguration().orientation;
         imgShow = findViewById(R.id.img_show);
+        mChronometer = findViewById(R.id.currentP);
+        mChronometer.start();
+        mChronometer.setFormat("Time Running - %s");
 
         // music
         soundIsOff = Home.soundIsOff;
@@ -181,7 +188,7 @@ public class Puzzle extends AppCompatActivity {
         );
 
 
-         gridView = findViewById(R.id.gridView);
+        gridView = findViewById(R.id.gridView);
         if (index < 4) gridView.setNumColumns(3);
         else gridView.setNumColumns(4);
         gridView.setAdapter(new Adapter(this, randomImageArray));
@@ -214,9 +221,10 @@ public class Puzzle extends AppCompatActivity {
                         toWin = new Intent(Puzzle.this, Win.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toWin);
+                        sChronometer = mChronometer.getFormat();
+                        mChronometer.stop();
                         finish();
-                    }
-                    else if (randomImageArray[9] == newImageArray[9] &&
+                    } else if (randomImageArray[9] == newImageArray[9] &&
                             randomImageArray[10] == newImageArray[10] &&
                             randomImageArray[11] == newImageArray[11] &&
                             randomImageArray[12] == newImageArray[12] &&
@@ -227,6 +235,8 @@ public class Puzzle extends AppCompatActivity {
                         toWin = new Intent(Puzzle.this, Win.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toWin);
+                        sChronometer = mChronometer.getFormat();
+                        mChronometer.stop();
                         finish();
                     }
                 }
