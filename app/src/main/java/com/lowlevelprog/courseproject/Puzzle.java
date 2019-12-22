@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,6 +29,7 @@ public class Puzzle extends AppCompatActivity {
     private static Random random = new Random();
     public Chronometer mChronometer;
     public String sChronometer;
+    public long elapsedMillis;
 
     private int[] level1;
     private int example = 1;
@@ -38,6 +39,7 @@ public class Puzzle extends AppCompatActivity {
     Button showHide;
     ImageView imgShow;
     GridView gridView;
+
 
     public static void swap(int[] array, int firstInd, int secondInd) {
         int temporary = array[firstInd];
@@ -128,6 +130,7 @@ public class Puzzle extends AppCompatActivity {
         mChronometer = findViewById(R.id.currentP);
         mChronometer.start();
         mChronometer.setFormat("Time Running - %s");
+        elapsedMillis = System.currentTimeMillis() / 1000;
 
         // music
         soundIsOff = Home.soundIsOff;
@@ -223,6 +226,7 @@ public class Puzzle extends AppCompatActivity {
                         startActivity(toWin);
                         sChronometer = mChronometer.getFormat();
                         mChronometer.stop();
+                        elapsedMillis = System.currentTimeMillis();
                         finish();
                     } else if (randomImageArray[9] == newImageArray[9] &&
                             randomImageArray[10] == newImageArray[10] &&
@@ -237,6 +241,7 @@ public class Puzzle extends AppCompatActivity {
                         startActivity(toWin);
                         sChronometer = mChronometer.getFormat();
                         mChronometer.stop();
+                        elapsedMillis = System.currentTimeMillis();
                         finish();
                     }
                 }

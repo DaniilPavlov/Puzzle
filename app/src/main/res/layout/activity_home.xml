@@ -1,50 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Home">
 
-    <Space
-        android:id="@+id/space_main1"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/but_menu"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:text="@string/menu" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <Space
-        android:id="@+id/space_main2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Home">
 
-    <Button
-        android:id="@+id/but_about"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:text="@string/about" />
+        <Space
+            android:id="@+id/space_main1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
 
-    <Space
-        android:id="@+id/space_main3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:text="@string/about" />
+        <Button
+            android:id="@+id/but_menu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/menu" />
 
-    <ImageButton
-        android:id="@+id/soundRegulator"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:contentDescription="@string/sound_button_description"
-        android:onClick="soundOff" />
-</LinearLayout>
+        <Space
+            android:id="@+id/space_main2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
+
+        <Button
+            android:id="@+id/but_about"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/about" />
+
+        <Space
+            android:id="@+id/space_main3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="@string/about" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

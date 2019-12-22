@@ -5,8 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -60,13 +65,13 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        findViewById(R.id.soundRegulator).setBackgroundResource(R.drawable.volume_up);
 
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
         startService(music);
         //pausing when needed
+
 
 
         Button menu = findViewById(R.id.but_menu);
@@ -93,23 +98,49 @@ public class Home extends AppCompatActivity {
                     }
                 }
         );
+
+        Toolbar toolbar = findViewById(R.id.bar);
+        toolbar.setTitle("Puzzle");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        setSupportActionBar(toolbar);
     }
 
-    public void soundOff(View view) {
-        if (!soundIsOff) {
-            doUnbindService();
-            Intent music = new Intent();
-            music.setClass(this, MusicService.class);
-            stopService(music);
-            findViewById(R.id.soundRegulator).setBackgroundResource(R.drawable.volume_down);
-            soundIsOff = true;
-        } else {
-            doBindService();
-            Intent music = new Intent();
-            music.setClass(this, MusicService.class);
-            startService(music);
-            findViewById(R.id.soundRegulator).setBackgroundResource(R.drawable.volume_up);
-            soundIsOff = false;
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem filterAction = menu.findItem(R.id.sound);
+        filterAction.setIcon(R.drawable.volume_up);
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem optionItem) {
+        int id = optionItem.getItemId();
+        View menuItemView = findViewById(R.id.sound);
+        if (id == R.id.sound) {
+            if (!soundIsOff) {
+                doUnbindService();
+                Intent music = new Intent();
+                music.setClass(this, MusicService.class);
+                stopService(music);
+                optionItem.setIcon(R.drawable.volume_down);
+                soundIsOff = true;
+            } else {
+                doBindService();
+                Intent music = new Intent();
+                music.setClass(this, MusicService.class);
+                startService(music);
+                optionItem.setIcon(R.drawable.volume_up);
+                soundIsOff = false;
+            }
+        }
+        return super.onOptionsItemSelected(optionItem);
+    }
+
 }

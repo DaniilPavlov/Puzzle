@@ -7,11 +7,9 @@ import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,7 +54,7 @@ public class Win extends AppCompatActivity {
         ImageView ivBasicImage = findViewById(R.id.image_win);
         TextView connection = findViewById(R.id.connection);
         TextView lastC = findViewById(R.id.current);
-        lastC.setText(puzzle.sChronometer);
+        lastC.setText(Long.toString(puzzle.elapsedMillis));
 
         ConnectivityManager cm =
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

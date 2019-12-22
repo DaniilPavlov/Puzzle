@@ -16,13 +16,15 @@
 
         <service
             android:name=".MusicService"
-            android:enabled="true" />
+            android:enabled="true"
+            />
 
         <activity android:name=".About" />
         <activity android:name=".Hard" />
         <activity android:name=".Standard" />
         <activity android:name=".LevelChoice" />
-        <activity android:name=".Home">
+        <activity android:name=".Home"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

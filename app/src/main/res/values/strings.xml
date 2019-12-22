@@ -12,5 +12,6 @@
     <string name="win">win</string>
     <string name="InternetCon">К сожалению, у вас отсутствует подключение к интернету и мы не можем загрузить ваш кубок :(</string>
     <string name="TimeZone">Вы прошли уровень за</string>
+    <string name="volume">volume</string>
 
 </resources>
