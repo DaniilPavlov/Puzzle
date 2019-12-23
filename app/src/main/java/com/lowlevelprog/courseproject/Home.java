@@ -16,14 +16,14 @@ import android.view.View;
 import android.widget.Button;
 
 public class Home extends AppCompatActivity {
-    static boolean soundIsOff = false;
-    // variables for music
+    MenuItem filterAction;
+    View menuItemView;
+    static boolean soundIsOff;
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection() {
 
-        public void onServiceConnected(ComponentName name, IBinder
-                binder) {
+        public void onServiceConnected(ComponentName name, IBinder binder) {
             mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
@@ -59,20 +59,19 @@ public class Home extends AppCompatActivity {
         if (mServ != null) {
             mServ.pauseMusic();
         }
+        doUnbindService();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        menuItemView = findViewById(R.id.sound);
 
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
         startService(music);
-        //pausing when needed
-
-
 
         Button menu = findViewById(R.id.but_menu);
         menu.setOnClickListener(
@@ -105,6 +104,7 @@ public class Home extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -113,8 +113,10 @@ public class Home extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem filterAction = menu.findItem(R.id.sound);
-        filterAction.setIcon(R.drawable.volume_up);
+        filterAction = menu.findItem(R.id.sound);
+        if (soundIsOff) {
+            filterAction.setIcon(R.drawable.volume_down);
+        } else filterAction.setIcon(R.drawable.volume_up);
         super.onPrepareOptionsMenu(menu);
         return true;
     }
@@ -122,7 +124,6 @@ public class Home extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem optionItem) {
         int id = optionItem.getItemId();
-        View menuItemView = findViewById(R.id.sound);
         if (id == R.id.sound) {
             if (!soundIsOff) {
                 doUnbindService();

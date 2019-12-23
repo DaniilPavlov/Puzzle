@@ -12,6 +12,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     private final IBinder mBinder = new ServiceBinder();
     MediaPlayer mPlayer;
     private int length = 0;
+    Home home;
 
     public MusicService() {
     }
@@ -44,7 +45,6 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
             public boolean onError(MediaPlayer mp, int what, int
                     extra) {
-
                 onError(mPlayer, what, extra);
                 return true;
             }
@@ -53,9 +53,10 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (mPlayer != null) {
-            mPlayer.start();
-        }
+        if (!home.soundIsOff)
+            if (mPlayer != null) {
+                mPlayer.start();
+            }
         return START_NOT_STICKY;
     }
 
@@ -77,26 +78,6 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
         }
     }
 
-    public void startMusic() {
-        mPlayer = MediaPlayer.create(this, R.raw.track);
-        mPlayer.setOnErrorListener(this);
-
-        if (mPlayer != null) {
-            mPlayer.setLooping(true);
-            mPlayer.setVolume(50, 50);
-            mPlayer.start();
-        }
-
-    }
-
-    public void stopMusic() {
-        if (mPlayer != null) {
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null;
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -111,7 +92,6 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     }
 
     public boolean onError(MediaPlayer mp, int what, int extra) {
-
         Toast.makeText(this, "Проигрывание музыки завершилось ошибкой",
                 Toast.LENGTH_SHORT).show();
         if (mPlayer != null) {

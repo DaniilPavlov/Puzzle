@@ -4,8 +4,5 @@
     <item
         android:id="@+id/sound"
         android:title="@string/volume"
-        app:showAsAction="always"
-
-        />
-
+        app:showAsAction="always" />
 </menu>

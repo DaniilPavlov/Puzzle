@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 
 public class About extends AppCompatActivity {
@@ -39,30 +41,34 @@ public class About extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         // music
-        soundIsOff =  Home.soundIsOff;
-        if (soundIsOff) {
-            doUnbindService();
-            Intent music = new Intent();
-            music.setClass(this, MusicService.class);
-            stopService(music);
-        } else {
+        soundIsOff = Home.soundIsOff;
+        if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
             music.setClass(this, MusicService.class);
             startService(music);
         }
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (mServ != null) {
             mServ.resumeMusic();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mServ != null) {
+            mServ.pauseMusic();
+        }
+        doUnbindService();
     }
 }

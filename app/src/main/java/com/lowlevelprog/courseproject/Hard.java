@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +15,6 @@ import android.widget.Button;
 public class Hard extends AppCompatActivity {
 
     boolean soundIsOff;
-
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection() {
@@ -29,8 +30,7 @@ public class Hard extends AppCompatActivity {
     };
 
     void doBindService() {
-        bindService(new Intent(this, MusicService.class),
-                Scon, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, MusicService.class), Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
@@ -41,7 +41,6 @@ public class Hard extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +48,7 @@ public class Hard extends AppCompatActivity {
 
         // music
         soundIsOff = Home.soundIsOff;
-        if (soundIsOff) {
-            doUnbindService();
-            Intent music = new Intent();
-            music.setClass(this, MusicService.class);
-            stopService(music);
-        } else {
+        if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
             music.setClass(this, MusicService.class);
@@ -103,10 +97,20 @@ public class Hard extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         if (mServ != null) {
             mServ.resumeMusic();
         }
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mServ != null) {
+            mServ.pauseMusic();
+        }
+        doUnbindService();
+    }
+
 }

@@ -7,7 +7,9 @@ import android.content.ServiceConnection;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,8 +20,6 @@ import com.squareup.picasso.Picasso;
 public class Win extends AppCompatActivity {
 
     boolean soundIsOff;
-    Puzzle puzzle = new Puzzle();
-
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection() {
@@ -54,7 +54,7 @@ public class Win extends AppCompatActivity {
         ImageView ivBasicImage = findViewById(R.id.image_win);
         TextView connection = findViewById(R.id.connection);
         TextView lastC = findViewById(R.id.current);
-        lastC.setText(Long.toString(puzzle.elapsedMillis));
+        lastC.setText("Your level time is " + Puzzle.elapsedMillis + " seconds");
 
         ConnectivityManager cm =
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -65,14 +65,9 @@ public class Win extends AppCompatActivity {
         } else {
             connection.setVisibility(View.VISIBLE);
         }
-        // music
+
         soundIsOff = Home.soundIsOff;
-        if (soundIsOff) {
-            doUnbindService();
-            Intent music = new Intent();
-            music.setClass(this, MusicService.class);
-            stopService(music);
-        } else {
+        if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
             music.setClass(this, MusicService.class);
@@ -89,14 +84,12 @@ public class Win extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
+    public void onPause() {
+        super.onPause();
+        if (mServ != null) {
+            mServ.pauseMusic();
+        }
+        doUnbindService();
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-    }
 }

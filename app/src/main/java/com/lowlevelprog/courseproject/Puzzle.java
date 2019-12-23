@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,10 +29,8 @@ public class Puzzle extends AppCompatActivity {
     public static int index = 1;
     public static int orientation;
     private static Random random = new Random();
-    public Chronometer mChronometer;
-    public String sChronometer;
-    public long elapsedMillis;
-
+    public static Chronometer mChronometer;
+    public static long elapsedMillis;
     private int[] level1;
     private int example = 1;
     private int[] newImageArray;
@@ -66,6 +66,7 @@ public class Puzzle extends AppCompatActivity {
         outState.putIntArray("key3", randomImageArray);
         outState.putString("key4", shText);
         outState.putInt("key5", example);
+        outState.putLong("key6", mChronometer.getBase());
     }
 
     @Override
@@ -77,6 +78,7 @@ public class Puzzle extends AppCompatActivity {
             randomImageArray = savedInstanceState.getIntArray("key3");
             shText = savedInstanceState.getString("key4");
             example = savedInstanceState.getInt("key5");
+            mChronometer.setBase(savedInstanceState.getLong("key6"));
             if (example == 1) {
                 showHide.setText("hide");
                 imgShow.setVisibility(View.VISIBLE);
@@ -97,8 +99,7 @@ public class Puzzle extends AppCompatActivity {
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection() {
-        public void onServiceConnected(ComponentName name, IBinder
-                binder) {
+        public void onServiceConnected(ComponentName name, IBinder binder) {
             mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
@@ -108,8 +109,7 @@ public class Puzzle extends AppCompatActivity {
     };
 
     void doBindService() {
-        bindService(new Intent(this, MusicService.class),
-                Scon, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, MusicService.class), Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
@@ -120,7 +120,6 @@ public class Puzzle extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +129,7 @@ public class Puzzle extends AppCompatActivity {
         mChronometer = findViewById(R.id.currentP);
         mChronometer.start();
         mChronometer.setFormat("Time Running - %s");
-        elapsedMillis = System.currentTimeMillis() / 1000;
 
-        // music
         soundIsOff = Home.soundIsOff;
         if (soundIsOff) {
             doUnbindService();
@@ -220,13 +217,13 @@ public class Puzzle extends AppCompatActivity {
                         randomImageArray[7] == newImageArray[7] &&
                         randomImageArray[8] == newImageArray[8]) {
                     if (index < 4) {
+                        mChronometer.stop();
+                        mChronometer.start();
+                        elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
                         Intent toWin;
                         toWin = new Intent(Puzzle.this, Win.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toWin);
-                        sChronometer = mChronometer.getFormat();
-                        mChronometer.stop();
-                        elapsedMillis = System.currentTimeMillis();
                         finish();
                     } else if (randomImageArray[9] == newImageArray[9] &&
                             randomImageArray[10] == newImageArray[10] &&
@@ -239,9 +236,9 @@ public class Puzzle extends AppCompatActivity {
                         toWin = new Intent(Puzzle.this, Win.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toWin);
-                        sChronometer = mChronometer.getFormat();
                         mChronometer.stop();
-                        elapsedMillis = System.currentTimeMillis();
+                        mChronometer.start();
+                        elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
                         finish();
                     }
                 }
@@ -307,12 +304,20 @@ public class Puzzle extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         if (mServ != null) {
             mServ.resumeMusic();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mServ != null) {
+            mServ.pauseMusic();
+        }
+        doUnbindService();
     }
 }

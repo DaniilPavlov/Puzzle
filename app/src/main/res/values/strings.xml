@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Course project</string>
+    <string name="app_name">Puzzle</string>
     <string name="about">About</string>
     <string name="level_1">level_1</string>
     <string name="level_2">level_2</string>
@@ -10,8 +10,7 @@
     <string name="sound_button_description">Turning sound off and on</string>
     <string name="hide">hide</string>
     <string name="win">win</string>
-    <string name="InternetCon">К сожалению, у вас отсутствует подключение к интернету и мы не можем загрузить ваш кубок :(</string>
-    <string name="TimeZone">Вы прошли уровень за</string>
     <string name="volume">volume</string>
+    <string name="reward">Unfortunately, you don’t have an internet connection and we can’t show your reward :(</string>
 
 </resources>
