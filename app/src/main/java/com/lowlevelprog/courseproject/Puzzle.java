@@ -128,7 +128,7 @@ public class Puzzle extends AppCompatActivity {
         imgShow = findViewById(R.id.img_show);
         mChronometer = findViewById(R.id.currentP);
         mChronometer.start();
-        mChronometer.setFormat("Time Running - %s");
+        mChronometer.setFormat("Time - %s");
 
         soundIsOff = Home.soundIsOff;
         if (soundIsOff) {

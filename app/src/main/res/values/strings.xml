@@ -12,5 +12,10 @@
     <string name="win">win</string>
     <string name="volume">volume</string>
     <string name="reward">Unfortunately, you don’t have an internet connection and we can’t show your reward :(</string>
+    <string name="Professor">Professor: Kuznetsov Andrei Nikolaevich</string>
+    <string name="Developer">Developer: Pavlov Daniil Vyacheslavovich</string>
+    <string name="GameName">Puzzle game</string>
+    <string name="versionGame">Game Version: 2.4</string>
+    <string name="Organization">Organization: Peter the Great St.Petersburg Polytechnic University</string>
 
 </resources>

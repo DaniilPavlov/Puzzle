@@ -9,6 +9,7 @@ import android.os.IBinder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 public class About extends AppCompatActivity {
 
@@ -45,6 +46,8 @@ public class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        ImageView imageView = (ImageView) findViewById(R.id.image_icon);
+        imageView.setImageResource(R.drawable.chelsea);
         // music
         soundIsOff = Home.soundIsOff;
         if (!soundIsOff) {
