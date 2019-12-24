@@ -34,6 +34,21 @@ public class Home extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("keySound", soundIsOff);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            soundIsOff = savedInstanceState.getBoolean("keySound");
+        }
+    }
+
+
     void doBindService() {
         bindService(new Intent(this, MusicService.class),
                 Scon, Context.BIND_AUTO_CREATE);
@@ -95,11 +110,12 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         menuItemView = findViewById(R.id.sound);
 
-        doBindService();
-        Intent music = new Intent();
-        music.setClass(this, MusicService.class);
-        startService(music);
-
+        if(!soundIsOff) {
+            doBindService();
+            Intent music = new Intent();
+            music.setClass(this, MusicService.class);
+            startService(music);
+        }
         mHomeWatcher = new HomeWatcher(this);
         mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
             @Override
