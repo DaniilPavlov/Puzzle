@@ -77,6 +77,15 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        doUnbindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        mHomeWatcher.stopWatch();
+    }
+
+    @Override
+    public void onBackPressed() {
         System.exit(0);
     }
 
