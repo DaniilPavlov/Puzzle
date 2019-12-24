@@ -9,6 +9,7 @@ import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -39,6 +40,7 @@ public class Puzzle extends AppCompatActivity {
     Button showHide;
     ImageView imgShow;
     GridView gridView;
+    HomeWatcher mHomeWatcher;
 
 
     public static void swap(int[] array, int firstInd, int secondInd) {
@@ -56,7 +58,6 @@ public class Puzzle extends AppCompatActivity {
         }
         return array;
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -131,17 +132,32 @@ public class Puzzle extends AppCompatActivity {
         mChronometer.setFormat("Time - %s");
 
         soundIsOff = Home.soundIsOff;
-        if (soundIsOff) {
-            doUnbindService();
-            Intent music = new Intent();
-            music.setClass(this, MusicService.class);
-            stopService(music);
-        } else {
+        if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
             music.setClass(this, MusicService.class);
             startService(music);
         }
+
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                    doUnbindService();
+                }
+            }
+
+            @Override
+            public void onHomeLongPressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                    doUnbindService();
+                }
+            }
+        });
+        mHomeWatcher.startWatch();
 
         Bundle bundle = getIntent().getExtras();
         load(bundle.getString("strName"));
@@ -186,7 +202,6 @@ public class Puzzle extends AppCompatActivity {
                     }
                 }
         );
-
 
         gridView = findViewById(R.id.gridView);
         if (index < 4) gridView.setNumColumns(3);
@@ -246,7 +261,6 @@ public class Puzzle extends AppCompatActivity {
         });
     }
 
-
     public void load(String choice) {
         switch (Integer.parseInt(choice)) {
             case 1:
@@ -301,23 +315,43 @@ public class Puzzle extends AppCompatActivity {
                 imgShow.setImageResource(R.drawable.p6);
                 break;
         }
-
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+
         if (mServ != null) {
             mServ.resumeMusic();
         }
     }
 
+
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        if (mServ != null) {
-            mServ.pauseMusic();
+
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isScreenOn();
         }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
         doUnbindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        mHomeWatcher.stopWatch();
     }
 }

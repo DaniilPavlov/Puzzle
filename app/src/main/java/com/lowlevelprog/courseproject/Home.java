@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ public class Home extends AppCompatActivity {
     static boolean soundIsOff;
     private boolean mIsBound = false;
     private MusicService mServ;
+    HomeWatcher mHomeWatcher;
     private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -46,20 +48,36 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+
         if (mServ != null) {
             mServ.resumeMusic();
         }
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        if (mServ != null) {
-            mServ.pauseMusic();
+
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isScreenOn();
         }
-        doUnbindService();
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.exit(0);
     }
 
     @Override
@@ -72,6 +90,24 @@ public class Home extends AppCompatActivity {
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
         startService(music);
+
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+
+            @Override
+            public void onHomeLongPressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+        });
+        mHomeWatcher.startWatch();
 
         Button menu = findViewById(R.id.but_menu);
         menu.setOnClickListener(
@@ -143,5 +179,4 @@ public class Home extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(optionItem);
     }
-
 }

@@ -15,7 +15,7 @@
     <string name="Professor">Professor: Kuznetsov Andrei Nikolaevich</string>
     <string name="Developer">Developer: Pavlov Daniil Vyacheslavovich</string>
     <string name="GameName">Puzzle game</string>
-    <string name="versionGame">Game Version: 2.4</string>
+    <string name="versionGame">Game Version: 2.5</string>
     <string name="Organization">Organization: Peter the Great St.Petersburg Polytechnic University</string>
 
 </resources>

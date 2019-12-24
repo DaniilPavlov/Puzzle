@@ -9,6 +9,7 @@ import android.os.IBinder;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,6 +17,7 @@ public class Standard extends AppCompatActivity {
     boolean soundIsOff;
     private boolean mIsBound = false;
     private MusicService mServ;
+    HomeWatcher mHomeWatcher;
     private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
@@ -53,6 +55,26 @@ public class Standard extends AppCompatActivity {
             music.setClass(this, MusicService.class);
             startService(music);
         }
+
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                    doUnbindService();
+                }
+            }
+
+            @Override
+            public void onHomeLongPressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                    doUnbindService();
+                }
+            }
+        });
+        mHomeWatcher.startWatch();
 
         Button s1 = findViewById(R.id.but_s1);
         s1.setOnClickListener(
@@ -96,19 +118,39 @@ public class Standard extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
+
         if (mServ != null) {
             mServ.resumeMusic();
         }
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        if (mServ != null) {
-            mServ.pauseMusic();
+
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isScreenOn();
         }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
         doUnbindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        mHomeWatcher.stopWatch();
     }
 }

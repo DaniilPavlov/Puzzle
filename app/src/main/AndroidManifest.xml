@@ -34,6 +34,7 @@
         <activity
             android:name=".Puzzle"
             android:theme="@style/IntroTheme" />
+        <service android:enabled="true" android:name=".MusicService" />
     </application>
 
 </manifest>
