@@ -84,8 +84,16 @@ public class WinActivity extends AppCompatActivity {
                     imageWin.setImageBitmap(viewModel.get_image().getValue());
                 }
             };
-            spinner.setVisibility(View.GONE);
             viewModel.get_image().observe(this, observer);
+
+            final Observer<Boolean> observer2 = new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean set) {
+                    if (!set)
+                    spinner.setVisibility(View.GONE);
+                }
+            };
+            viewModel.get_spinner().observe(this, observer2);
 
         } else {
             connection.setVisibility(View.VISIBLE);
