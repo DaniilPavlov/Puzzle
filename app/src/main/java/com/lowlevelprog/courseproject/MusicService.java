@@ -12,7 +12,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     private final IBinder mBinder = new ServiceBinder();
     MediaPlayer mPlayer;
     private int length = 0;
-    Home home;
+    HomeActivity homeActivity;
 
     public MusicService() {
     }
@@ -53,7 +53,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (!home.soundIsOff)
+        if (!homeActivity.soundIsOff)
             if (mPlayer != null) {
                 mPlayer.start();
             }

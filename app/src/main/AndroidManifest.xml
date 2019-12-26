@@ -11,18 +11,18 @@
         android:roundIcon="@drawable/chelsea"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Win"></activity>
+        <activity android:name=".WinActivity"></activity>
 
         <service
             android:name=".MusicService"
             android:enabled="true"
             />
 
-        <activity android:name=".About" />
-        <activity android:name=".Hard" />
-        <activity android:name=".Standard" />
-        <activity android:name=".LevelChoice" />
-        <activity android:name=".Home"
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".HardActivity" />
+        <activity android:name=".StandardActivity" />
+        <activity android:name=".LevelChoiceActivity" />
+        <activity android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Puzzle"
+            android:name=".PuzzleActivity"
             android:theme="@style/IntroTheme" />
         <service android:enabled="true" android:name=".MusicService" />
     </application>

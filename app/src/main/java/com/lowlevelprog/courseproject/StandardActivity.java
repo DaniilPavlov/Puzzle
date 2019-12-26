@@ -13,8 +13,7 @@ import android.os.PowerManager;
 import android.view.View;
 import android.widget.Button;
 
-public class Hard extends AppCompatActivity {
-
+public class StandardActivity extends AppCompatActivity {
     boolean soundIsOff;
     private boolean mIsBound = false;
     private MusicService mServ;
@@ -32,7 +31,8 @@ public class Hard extends AppCompatActivity {
     };
 
     void doBindService() {
-        bindService(new Intent(this, MusicService.class), Scon, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, MusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
@@ -46,9 +46,9 @@ public class Hard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hard);
+        setContentView(R.layout.activity_standard);
 
-        soundIsOff = Home.soundIsOff;
+        soundIsOff = HomeActivity.soundIsOff;
         if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
@@ -76,42 +76,42 @@ public class Hard extends AppCompatActivity {
         });
         mHomeWatcher.startWatch();
 
-        Button h1 = findViewById(R.id.but_h1);
-        h1.setOnClickListener(
+        Button s1 = findViewById(R.id.but_s1);
+        s1.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent toH1;
-                        toH1 = new Intent(Hard.this, Puzzle.class).
+                        Intent toS1;
+                        toS1 = new Intent(StandardActivity.this, PuzzleActivity.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        toH1.putExtra("strName", "4");
-                        startActivity(toH1);
+                        toS1.putExtra("strName", "1");
+                        startActivity(toS1);
                     }
                 }
         );
-        Button h2 = findViewById(R.id.but_h2);
-        h2.setOnClickListener(
+        Button s2 = findViewById(R.id.but_s2);
+        s2.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent toH2;
-                        toH2 = new Intent(Hard.this, Puzzle.class).
+                        Intent toS2;
+                        toS2 = new Intent(StandardActivity.this, PuzzleActivity.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        toH2.putExtra("strName", "5");
-                        startActivity(toH2);
+                        toS2.putExtra("strName", "2");
+                        startActivity(toS2);
                     }
                 }
         );
-        Button h3 = findViewById(R.id.but_h3);
-        h3.setOnClickListener(
+        Button s3 = findViewById(R.id.but_s3);
+        s3.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent toH3;
-                        toH3 = new Intent(Hard.this, Puzzle.class).
+                        Intent toS3;
+                        toS3 = new Intent(StandardActivity.this, PuzzleActivity.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        toH3.putExtra("strName", "6");
-                        startActivity(toH3);
+                        toS3.putExtra("strName", "3");
+                        startActivity(toS3);
                     }
                 }
         );

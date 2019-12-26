@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-public class Home extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
     MenuItem filterAction;
     View menuItemView;
     static boolean soundIsOff;
@@ -140,7 +140,7 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent toMenu;
-                        toMenu = new Intent(Home.this, LevelChoice.class).
+                        toMenu = new Intent(HomeActivity.this, LevelChoiceActivity.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toMenu);
                     }
@@ -152,7 +152,7 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent toAbout;
-                        toAbout = new Intent(Home.this, About.class).
+                        toAbout = new Intent(HomeActivity.this, AboutActivity.class).
                                 setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                         startActivity(toAbout);
                     }
@@ -160,7 +160,7 @@ public class Home extends AppCompatActivity {
         );
 
         Toolbar toolbar = findViewById(R.id.bar);
-        toolbar.setTitle("Puzzle");
+        toolbar.setTitle("PuzzleActivity");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         setSupportActionBar(toolbar);
     }

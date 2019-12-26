@@ -22,7 +22,7 @@ import android.widget.ImageView;
 
 import java.util.Random;
 
-public class Puzzle extends AppCompatActivity {
+public class PuzzleActivity extends AppCompatActivity {
 
     private int counter, firstClick, secondClick, rememberData;
     public static int width;
@@ -131,7 +131,7 @@ public class Puzzle extends AppCompatActivity {
         mChronometer.start();
         mChronometer.setFormat("Time - %s");
 
-        soundIsOff = Home.soundIsOff;
+        soundIsOff = HomeActivity.soundIsOff;
         if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
@@ -241,7 +241,7 @@ public class Puzzle extends AppCompatActivity {
                 mChronometer.stop();
                 elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
                 Intent toWin;
-                toWin = new Intent(Puzzle.this, Win.class).
+                toWin = new Intent(PuzzleActivity.this, WinActivity.class).
                         setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(toWin);
                 finish();
@@ -255,7 +255,7 @@ public class Puzzle extends AppCompatActivity {
                 mChronometer.stop();
                 elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
                 Intent toWin;
-                toWin = new Intent(Puzzle.this, Win.class).
+                toWin = new Intent(PuzzleActivity.this, WinActivity.class).
                         setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(toWin);
                 finish();

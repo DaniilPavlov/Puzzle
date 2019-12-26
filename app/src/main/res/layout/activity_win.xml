@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Win">
+    tools:context=".WinActivity">
 
     <ImageView
         android:id="@+id/image_win"

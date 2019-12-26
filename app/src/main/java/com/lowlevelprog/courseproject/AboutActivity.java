@@ -10,12 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 
-public class LevelChoice extends AppCompatActivity {
-    HomeWatcher mHomeWatcher;
+public class AboutActivity extends AppCompatActivity {
+
     boolean soundIsOff;
+    HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection() {
@@ -46,9 +46,11 @@ public class LevelChoice extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_levelchoice);
+        setContentView(R.layout.activity_about);
+        ImageView imageView = (ImageView) findViewById(R.id.image_icon);
+        imageView.setImageResource(R.drawable.chelsea);
 
-        soundIsOff = Home.soundIsOff;
+        soundIsOff = HomeActivity.soundIsOff;
         if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
@@ -76,30 +78,6 @@ public class LevelChoice extends AppCompatActivity {
         });
         mHomeWatcher.startWatch();
 
-        Button standard = findViewById(R.id.but_standard);
-        standard.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent toStart;
-                        toStart = new Intent(LevelChoice.this, Standard.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(toStart);
-                    }
-                }
-        );
-        Button hard = findViewById(R.id.but_hard);
-        hard.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent toHard;
-                        toHard = new Intent(LevelChoice.this, Hard.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(toHard);
-                    }
-                }
-        );
     }
 
     @Override

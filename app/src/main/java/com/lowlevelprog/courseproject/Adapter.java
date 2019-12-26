@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -13,9 +12,9 @@ public class Adapter extends BaseAdapter {
     private Context mContext;
     private ImageView imageView;
     private int[] grideArray;
-    private int gwidth = Puzzle.width;
-    private int gheight = Puzzle.height;
-    private int gorientation = Puzzle.orientation;
+    private int gwidth = PuzzleActivity.width;
+    private int gheight = PuzzleActivity.height;
+    private int gorientation = PuzzleActivity.orientation;
 
     public Adapter(Context context, int[] gridarray) {
         mContext = context;

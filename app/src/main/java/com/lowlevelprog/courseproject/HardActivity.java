@@ -10,14 +10,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Button;
 
-public class About extends AppCompatActivity {
+public class HardActivity extends AppCompatActivity {
 
     boolean soundIsOff;
-    HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
+    HomeWatcher mHomeWatcher;
     private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
@@ -31,8 +32,7 @@ public class About extends AppCompatActivity {
     };
 
     void doBindService() {
-        bindService(new Intent(this, MusicService.class),
-                Scon, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, MusicService.class), Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
@@ -46,11 +46,9 @@ public class About extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        ImageView imageView = (ImageView) findViewById(R.id.image_icon);
-        imageView.setImageResource(R.drawable.chelsea);
+        setContentView(R.layout.activity_hard);
 
-        soundIsOff = Home.soundIsOff;
+        soundIsOff = HomeActivity.soundIsOff;
         if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
@@ -78,6 +76,45 @@ public class About extends AppCompatActivity {
         });
         mHomeWatcher.startWatch();
 
+        Button h1 = findViewById(R.id.but_h1);
+        h1.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent toH1;
+                        toH1 = new Intent(HardActivity.this, PuzzleActivity.class).
+                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        toH1.putExtra("strName", "4");
+                        startActivity(toH1);
+                    }
+                }
+        );
+        Button h2 = findViewById(R.id.but_h2);
+        h2.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent toH2;
+                        toH2 = new Intent(HardActivity.this, PuzzleActivity.class).
+                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        toH2.putExtra("strName", "5");
+                        startActivity(toH2);
+                    }
+                }
+        );
+        Button h3 = findViewById(R.id.but_h3);
+        h3.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent toH3;
+                        toH3 = new Intent(HardActivity.this, PuzzleActivity.class).
+                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        toH3.putExtra("strName", "6");
+                        startActivity(toH3);
+                    }
+                }
+        );
     }
 
     @Override

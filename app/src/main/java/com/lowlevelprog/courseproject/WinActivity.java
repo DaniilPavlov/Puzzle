@@ -4,20 +4,31 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-public class Standard extends AppCompatActivity {
+public class WinActivity extends AppCompatActivity {
+
     boolean soundIsOff;
     private boolean mIsBound = false;
     private MusicService mServ;
+    TextView connection;
+    ImageView ivBasicImage;
     HomeWatcher mHomeWatcher;
+    private ImgViewModel viewModel;
     private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
@@ -46,9 +57,50 @@ public class Standard extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_standard);
+        setContentView(R.layout.activity_win);
+        ivBasicImage = findViewById(R.id.image_win);
+        connection = findViewById(R.id.connection);
+        TextView lastC = findViewById(R.id.current);
+        lastC.setText("Your level time is " + PuzzleActivity.elapsedMillis + " seconds");
 
-        soundIsOff = Home.soundIsOff;
+        viewModel = ViewModelProviders.of(this).get(ImgViewModel.class);
+
+        final ImageView imageWin = findViewById(R.id.image_win);
+        final ProgressBar spinner = findViewById(R.id.spinner);
+
+
+        ConnectivityManager cm =
+                (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            connection.setVisibility(View.INVISIBLE);
+            spinner.setVisibility(View.VISIBLE);
+
+            viewModel.loadImage(imageWin, "https://im0-tub-ru.yandex.net/i?id=389e4c5fcd7e6a3fd8b022fad23329a4&n=13");
+            final Observer<Bitmap> observer = new Observer<Bitmap>() {
+                @Override
+                public void onChanged(Bitmap set) {
+                    imageWin.setVisibility(View.VISIBLE);
+                    imageWin.setImageBitmap(viewModel.get_image().getValue());
+                }
+            };
+            spinner.setVisibility(View.GONE);
+            viewModel.get_image().observe(this, observer);
+
+        } else {
+            connection.setVisibility(View.VISIBLE);
+
+            Bitmap imageToSet;
+            if (viewModel.get_image().getValue() != null) {
+                connection.setVisibility(View.INVISIBLE);
+                imageToSet = viewModel.get_image().getValue();
+                imageWin.setImageBitmap(imageToSet);
+                imageWin.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        soundIsOff = HomeActivity.soundIsOff;
         if (!soundIsOff) {
             doBindService();
             Intent music = new Intent();
@@ -75,46 +127,6 @@ public class Standard extends AppCompatActivity {
             }
         });
         mHomeWatcher.startWatch();
-
-        Button s1 = findViewById(R.id.but_s1);
-        s1.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent toS1;
-                        toS1 = new Intent(Standard.this, Puzzle.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        toS1.putExtra("strName", "1");
-                        startActivity(toS1);
-                    }
-                }
-        );
-        Button s2 = findViewById(R.id.but_s2);
-        s2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent toS2;
-                        toS2 = new Intent(Standard.this, Puzzle.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        toS2.putExtra("strName", "2");
-                        startActivity(toS2);
-                    }
-                }
-        );
-        Button s3 = findViewById(R.id.but_s3);
-        s3.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent toS3;
-                        toS3 = new Intent(Standard.this, Puzzle.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        toS3.putExtra("strName", "3");
-                        startActivity(toS3);
-                    }
-                }
-        );
     }
 
     @Override
@@ -147,7 +159,6 @@ public class Standard extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         doUnbindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
