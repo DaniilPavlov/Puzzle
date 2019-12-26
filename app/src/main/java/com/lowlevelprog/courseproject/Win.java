@@ -4,16 +4,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,7 +29,10 @@ public class Win extends AppCompatActivity {
     boolean soundIsOff;
     private boolean mIsBound = false;
     private MusicService mServ;
+    TextView connection;
+    ImageView ivBasicImage;
     HomeWatcher mHomeWatcher;
+    private ImgViewModel viewModel;
     private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
@@ -53,19 +62,46 @@ public class Win extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
-        ImageView ivBasicImage = findViewById(R.id.image_win);
-        TextView connection = findViewById(R.id.connection);
+        ivBasicImage = findViewById(R.id.image_win);
+        connection = findViewById(R.id.connection);
         TextView lastC = findViewById(R.id.current);
         lastC.setText("Your level time is " + Puzzle.elapsedMillis + " seconds");
+
+        viewModel = ViewModelProviders.of(this).get(ImgViewModel.class);
+
+        final ImageView imageWin = findViewById(R.id.image_win);
+        final ProgressBar spinner = findViewById(R.id.spinner);
+
 
         ConnectivityManager cm =
                 (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
             connection.setVisibility(View.INVISIBLE);
-            Picasso.with(getApplicationContext()).load("https://im0-tub-ru.yandex.net/i?id=389e4c5fcd7e6a3fd8b022fad23329a4&n=13").into(ivBasicImage);
+            spinner.setVisibility(View.VISIBLE);
+
+            viewModel.loadImage(imageWin, "https://im0-tub-ru.yandex.net/i?id=389e4c5fcd7e6a3fd8b022fad23329a4&n=13");
+            final Observer<Bitmap> observer = new Observer<Bitmap>() {
+                @Override
+                public void onChanged(Bitmap set) {
+                    imageWin.setVisibility(View.VISIBLE);
+                    imageWin.setImageBitmap(viewModel.get_image().getValue());
+                }
+            };
+            spinner.setVisibility(View.GONE);
+            viewModel.get_image().observe(this, observer);
+
         } else {
             connection.setVisibility(View.VISIBLE);
+
+            Bitmap imageToSet;
+            if (viewModel.get_image().getValue() != null) {
+                connection.setVisibility(View.INVISIBLE);
+                imageToSet = viewModel.get_image().getValue();
+                imageWin.setImageBitmap(imageToSet);
+                imageWin.setVisibility(View.VISIBLE);
+            }
+
         }
 
         soundIsOff = Home.soundIsOff;

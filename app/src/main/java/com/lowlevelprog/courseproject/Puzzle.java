@@ -212,53 +212,55 @@ public class Puzzle extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 counter++;
-                if (counter == 1) {
-                    firstClick = position;
-                    rememberData = randomImageArray[position];
-                } else if (counter == 2) {
-                    secondClick = position;
-                    randomImageArray[firstClick] = randomImageArray[secondClick];
-                    randomImageArray[secondClick] = rememberData;
-                    gridView.invalidateViews();
-                    counter = 0;
-                }
-                if (randomImageArray[0] == newImageArray[0] &&
-                        randomImageArray[1] == newImageArray[1] &&
-                        randomImageArray[2] == newImageArray[2] &&
-                        randomImageArray[3] == newImageArray[3] &&
-                        randomImageArray[4] == newImageArray[4] &&
-                        randomImageArray[5] == newImageArray[5] &&
-                        randomImageArray[6] == newImageArray[6] &&
-                        randomImageArray[7] == newImageArray[7] &&
-                        randomImageArray[8] == newImageArray[8]) {
-                    if (index < 4) {
-                        mChronometer.stop();
-                        mChronometer.start();
-                        elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
-                        Intent toWin;
-                        toWin = new Intent(Puzzle.this, Win.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(toWin);
-                        finish();
-                    } else if (randomImageArray[9] == newImageArray[9] &&
-                            randomImageArray[10] == newImageArray[10] &&
-                            randomImageArray[11] == newImageArray[11] &&
-                            randomImageArray[12] == newImageArray[12] &&
-                            randomImageArray[13] == newImageArray[13] &&
-                            randomImageArray[14] == newImageArray[14] &&
-                            randomImageArray[15] == newImageArray[15]) {
-                        Intent toWin;
-                        toWin = new Intent(Puzzle.this, Win.class).
-                                setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                        startActivity(toWin);
-                        mChronometer.stop();
-                        mChronometer.start();
-                        elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
-                        finish();
-                    }
-                }
+                swapPrepare(counter, position);
             }
         });
+    }
+
+    public void swapPrepare(int counter, int position) {
+        if (counter == 1) {
+            firstClick = position;
+            rememberData = randomImageArray[position];
+        } else if (counter == 2) {
+            secondClick = position;
+            randomImageArray[firstClick] = randomImageArray[secondClick];
+            randomImageArray[secondClick] = rememberData;
+            gridView.invalidateViews();
+            this.counter = 0;
+        }
+        if (randomImageArray[0] == newImageArray[0] &&
+                randomImageArray[1] == newImageArray[1] &&
+                randomImageArray[2] == newImageArray[2] &&
+                randomImageArray[3] == newImageArray[3] &&
+                randomImageArray[4] == newImageArray[4] &&
+                randomImageArray[5] == newImageArray[5] &&
+                randomImageArray[6] == newImageArray[6] &&
+                randomImageArray[7] == newImageArray[7] &&
+                randomImageArray[8] == newImageArray[8]) {
+            if (index < 4) {
+                mChronometer.stop();
+                elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
+                Intent toWin;
+                toWin = new Intent(Puzzle.this, Win.class).
+                        setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(toWin);
+                finish();
+            } else if (randomImageArray[9] == newImageArray[9] &&
+                    randomImageArray[10] == newImageArray[10] &&
+                    randomImageArray[11] == newImageArray[11] &&
+                    randomImageArray[12] == newImageArray[12] &&
+                    randomImageArray[13] == newImageArray[13] &&
+                    randomImageArray[14] == newImageArray[14] &&
+                    randomImageArray[15] == newImageArray[15]) {
+                mChronometer.stop();
+                elapsedMillis = (SystemClock.elapsedRealtime() - mChronometer.getBase()) / 1000;
+                Intent toWin;
+                toWin = new Intent(Puzzle.this, Win.class).
+                        setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(toWin);
+                finish();
+            }
+        }
     }
 
     public void load(String choice) {
@@ -348,7 +350,6 @@ public class Puzzle extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         doUnbindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
